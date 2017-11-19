@@ -8,10 +8,10 @@ MEMORY {
 SECTIONS
 {
   . = 0x0;
-  .interrupt_vectors:
+  .isr_vector :
   {
     . = ALIGN(4);
-    KEEP(*(.interrupt_vectors)) /* 0x00 - 0xC0 */
+    KEEP(*(.isr_vector)) /* 0x00 - 0xC0 */
     . = ALIGN(4);
   } >FLASH
 
