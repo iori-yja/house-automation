@@ -56,7 +56,7 @@ SECTIONS
   . = ALIGN(4);
   _pre_start_data = .;
 
-  .data : AT ( _sidata )
+  .data : AT ( _pre_start_data )
   {
     . = ALIGN(4);
     _start_data = .;
