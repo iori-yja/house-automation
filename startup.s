@@ -61,7 +61,4 @@ init_bss_loop:
 	nop
 	b		.
 
-main:
-	b main
-
 .size  entry_point, .-entry_point
