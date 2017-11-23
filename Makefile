@@ -13,7 +13,7 @@ main.hex:main.out
 	$(LD) -T lpc1114.ld main.out -o main.hex
 
 main.out:main.s
-	$(AS) main.s startup.s
+	$(AS) main.s startup.s -o main.out
 
 startup.out:startup.s
 
