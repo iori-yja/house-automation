@@ -15,7 +15,5 @@ main.hex:main.out
 main.out:main.s
 	$(AS) main.s startup.s -o main.out
 
-startup.out:startup.s
-
 main.s:main.c
 	$(GCC) -S main.c
