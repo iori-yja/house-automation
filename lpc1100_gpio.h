@@ -36,5 +36,18 @@
 #define IOCON_PIO2_11 (* (volatile unsigned long *) (IOCON_BASE + 0x70)
 #define IOCON_PIO0_11 (* (volatile unsigned long *) (IOCON_BASE + 0x74)
 #define IOCON_PIO1_0  (* (volatile unsigned long *) (IOCON_BASE + 0x78)
+#define IOCON_PIO1_1  (* (volatile unsigned long *) (IOCON_BASE + 0x7c)
+#define IOCON_PIO1_2  (* (volatile unsigned long *) (IOCON_BASE + 0x80)
+#define IOCON_PIO3_0  (* (volatile unsigned long *) (IOCON_BASE + 0x84)
+#define IOCON_PIO3_1  (* (volatile unsigned long *) (IOCON_BASE + 0x88)
+#define IOCON_PIO2_3  (* (volatile unsigned long *) (IOCON_BASE + 0x8c)
+#define IOCON_PIO1_3  (* (volatile unsigned long *) (IOCON_BASE + 0x90)
+#define IOCON_PIO1_4  (* (volatile unsigned long *) (IOCON_BASE + 0x94)
+#define IOCON_PIO1_11 (* (volatile unsigned long *) (IOCON_BASE + 0x98)
+#define IOCON_PIO3_2  (* (volatile unsigned long *) (IOCON_BASE + 0x9c)
+#define IOCON_PIO1_5  (* (volatile unsigned long *) (IOCON_BASE + 0xa0)
+#define IOCON_PIO1_6  (* (volatile unsigned long *) (IOCON_BASE + 0xa4)
+#define IOCON_PIO1_7  (* (volatile unsigned long *) (IOCON_BASE + 0xa8)
+#define IOCON_PIO3_3  (* (volatile unsigned long *) (IOCON_BASE + 0xa8)
 
 #endif
