@@ -18,7 +18,7 @@ $(BUILD_DIR)/main.out:$(BUILD_DIR)/main.s
 	$(AS) $(BUILD_DIR)/main.s startup.s -o $(BUILD_DIR)/main.out
 
 $(BUILD_DIR)/main.s:main.c
-	$(GCC) -S -I$(C_HEADER) main.c -o $(BUILD_DIR)/main.s
+	$(GCC) -std=c99 -S -I$(C_HEADER) main.c -o $(BUILD_DIR)/main.s
 
 clean:
 	rm build/*

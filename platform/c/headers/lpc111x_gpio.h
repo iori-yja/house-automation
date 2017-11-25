@@ -1,5 +1,5 @@
-#ifndef _LPC1114_H_
-#define _LPC1114_H_
+#ifndef _LPC111X_GPIO_H_
+#define _LPC111X_GPIO_H_
 
 #define GPIO0_BASE   (AHB_START + 0x00000000)
 #define GPIO1_BASE   (AHB_START + 0x00010000)
