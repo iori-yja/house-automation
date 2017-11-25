@@ -5,6 +5,14 @@ MEMORY {
   RAM (xrw)       : ORIGIN = 0x10000000, LENGTH = 192K
 }
 
+__rom_start = ORIGIN(FLASH);
+__rom_size = LENGTH(FLASH);
+__rom_end = __rom_start + __rom_size;
+
+PROVIDE(__rom_start = __rom_start);
+PROVIDE(__rom_size = __rom_size);
+PROVIDE(__rom_end = __rom_end);
+
 SECTIONS
 {
   . = 0x0;
