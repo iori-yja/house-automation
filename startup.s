@@ -1,9 +1,9 @@
   .syntax unified
   .cpu cortex-m3
   .fpu softvfp
+	.align 2
   .thumb
   .thumb_func
-.text
 .global entry_point 
 
 /* start address for the initialization values of the .data section. 
@@ -19,38 +19,97 @@ defined in linker script */
 .word  _end_bss
 /* stack used for SystemInit_ExtMemCtl; always internal RAM used */
 
+.section isr_vector:
+	.long	0x10001000
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	0
+	.long	0
+	.long	0
+	.long	0
+	.long	0
+	.long	0
+	.long	0
+	.long	1+entry_point
+	.long	0
+	.long	0
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+ 	.long	1+entry_point
+ 	.long	1+entry_point
+ 	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	0
+	.long	0
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	0
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
+	.long	1+entry_point
 
-.section  .text.reset_handler:
+
+.text.reset_handler:
 .type  entry_point, %function
 
+.equ GPIO1DIR  ,0x50018000
+.equ GPIO1DATA ,0x50013ffc
+.equ LED ,8
+
 entry_point:
-  movs  r1, #0
-  b init_data
 
-init_data:
-  ldr  r3, =_pre_start_data
-  ldr  r3, [r3, r1]
-  str  r3, [r0, r1]
-  adds  r1, r1, #4
-    
-init_data_loop:
-  ldr  r0, =_start_data
-  ldr  r3, =_end_data
-  adds  r2, r0, r1
-  cmp  r2, r3
-  bcc  init_data_loop
-  ldr  r2, =_start_bss
+/*
++-----------------------------------------------------------------------------+
+| Initialize .data section
++-----------------------------------------------------------------------------+
+*/
 
-  b  init_bss
+	ldr		r1, =__data_init_start
+    ldr		r2, =__data_start
+    ldr		r3, =__data_end
 
-init_bss:
-  movs  r3, #0
-  str  r3, [r2], #4
-    
-init_bss_loop:
-  ldr  r3, = _end_bss
-  cmp  r2, r3
-  bcc  init_bss_loop
+	b		2f
+1:	ldmia	r1!, {r0}
+	stmia	r2!, {r0}
+2:	cmp		r2, r3
+	bne		1b
+
+/*
++-----------------------------------------------------------------------------+
+| Zero-init .bss section
++-----------------------------------------------------------------------------+
+*/
+
+	movs	r0, #0
+	ldr		r1, =__bss_start
+	ldr		r2, =__bss_end
+
+	b		2f
+1:	stmia	r1!, {r0}
+2:	cmp		r1, r2
+	bne		1b
+
 
 /* Call the application's entry point.*/
 	ldr		r0, =main
