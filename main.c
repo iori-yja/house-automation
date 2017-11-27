@@ -8,7 +8,7 @@ main () {
 	while(1) {
 		for (int i = 0x200000; i; i --) {
 		}
-		GPIO1DATA = 0;
+		GPIO1DATA ^= 1 << 8;
 	}
 }
 
