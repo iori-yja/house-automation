@@ -104,40 +104,30 @@ SECTIONS
 	{
 		. = ALIGN(8);
 		__stack_start = .;
-		PROVIDE(__stack_start = __stack_start);
-
 		. = ALIGN(8);
 		__main_stack_start = .;
-		PROVIDE(__main_stack_start = __main_stack_start);
-
 		. += __main_stack_size;
 
 		. = ALIGN(8);
 		__main_stack_end = .;
-		PROVIDE(__main_stack_end = __main_stack_end);
 
 		. = ALIGN(8);
 		__process_stack_start = .;
-		PROVIDE(__process_stack_start = __process_stack_start);
 
 		. += __process_stack_size;
 
 		. = ALIGN(8);
 		__process_stack_end = .;
-		PROVIDE(__process_stack_end = __process_stack_end);
 
 		. = ALIGN(8);
 		__stack_end = .;
-		PROVIDE(__stack_end = __stack_end);
 	} > RAM AT > RAM 
 
 	. = ALIGN(4);
 	__heap_start = .;
-	PROVIDE(__heap_start = __heap_start);
 
 	. = ALIGN(4);
 	__heap_end = __ram_end;
-	PROVIDE(__heap_end = __heap_end);
 
 	.stab 				0 (NOLOAD) : { *(.stab) }
 	.stabstr 			0 (NOLOAD) : { *(.stabstr) }
