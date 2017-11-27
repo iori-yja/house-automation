@@ -1,3 +1,17 @@
+/*
++=============================================================================+
+| stacks sizes
++=============================================================================+
+*/
+
+/* Handler mode (core exceptions / interrupts) can use only main stack */
+/* Thread mode can use main stack (default) or process stack - selected in CONTROL special register */
+
+__main_stack_size = 0;
+__process_stack_size = 1024;
+
+
+/*----------------------------*/
 ENTRY(entry_point)
 
 MEMORY {
@@ -9,23 +23,25 @@ __rom_start = ORIGIN(FLASH);
 __rom_size = LENGTH(FLASH);
 __rom_end = __rom_start + __rom_size;
 
-PROVIDE(__rom_start = __rom_start);
-PROVIDE(__rom_size = __rom_size);
-PROVIDE(__rom_end = __rom_end);
+__ram_start = ORIGIN(RAM);
+__ram_size = LENGTH(RAM);
+__ram_end = __ram_start + __ram_size;
 
 SECTIONS
 {
   . = 0x0;
-  .isr_vector :
+  .vectors :
   {
     . = ALIGN(4);
-    KEEP(*(.isr_vector)) /* 0x00 - 0xC0 */
+    KEEP(*(.vectors)) /* 0x00 - 0xC0 */
     . = ALIGN(4);
-  } >FLASH
+  } >FLASH AT > FLASH
 
   . = 0xC0;
-  .text :
-  {
+	.text :
+	{
+		. = 0xC0;
+		. = ALIGN(4);
     *(.text .text*)
 		*(.glue_7t .glue_7);
     *(.rodata .rodata*)
@@ -37,14 +53,15 @@ SECTIONS
 
     . = ALIGN(4);
     _etext = .; /* define a global symbols at end of code */
-  } >FLASH
+	} > FLASH AT > FLASH 
 
-   .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH
-    .ARM : {
-    __exidx_start = .;
-      *(.ARM.exidx*)
-      __exidx_end = .;
-    } >FLASH
+	. = ALIGN(4);
+ .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH
+	.ARM : {
+	__exidx_start = .;
+		*(.ARM.exidx*)
+		__exidx_end = .;
+	} >FLASH
 
   .init_array :
   {
@@ -61,31 +78,68 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH
 
-  . = ALIGN(4);
-  _pre_start_data = .;
 
-  .data : AT ( _pre_start_data )
-  {
-    . = ALIGN(4);
-    _start_data = .;
-    *(.data)
-    *(.data*)
+	.data :
+	{
+		. = ALIGN(4);
+		__data_init_start = .;
+		__data_start = .;
+		. = ALIGN(4);
+		*(.data .data.* .gnu.linkonce.d.*)
 
-    . = ALIGN(4);
-    _end_data = .;
-  } >RAM
+		__data_end = .;
+	} > RAM AT > FLASH
 
-  . = ALIGN(4);
-  .bss :
-  {
-    _start_bss = .;
-    *(.bss)
-    *(.bss*)
-    *(COMMON)
+	.bss :
+	{
+		. = ALIGN(4);
+		__bss_start = .;
+		*(.bss .bss.* .gnu.linkonce.b.*)
+		*(COMMON);
+		__bss_end = .;
+	} > RAM AT > RAM 
 
-    . = ALIGN(4);
-    _end_bss = .;
-  } >RAM
+/*----------------------------*/
+	.stack :
+	{
+		. = ALIGN(8);
+		__stack_start = .;
+		PROVIDE(__stack_start = __stack_start);
 
-  .ARM.attributes 0 : { *(.ARM.attributes) }
+		. = ALIGN(8);
+		__main_stack_start = .;
+		PROVIDE(__main_stack_start = __main_stack_start);
+
+		. += __main_stack_size;
+
+		. = ALIGN(8);
+		__main_stack_end = .;
+		PROVIDE(__main_stack_end = __main_stack_end);
+
+		. = ALIGN(8);
+		__process_stack_start = .;
+		PROVIDE(__process_stack_start = __process_stack_start);
+
+		. += __process_stack_size;
+
+		. = ALIGN(8);
+		__process_stack_end = .;
+		PROVIDE(__process_stack_end = __process_stack_end);
+
+		. = ALIGN(8);
+		__stack_end = .;
+		PROVIDE(__stack_end = __stack_end);
+	} > RAM AT > RAM 
+
+	. = ALIGN(4);
+	__heap_start = .;
+	PROVIDE(__heap_start = __heap_start);
+
+	. = ALIGN(4);
+	__heap_end = __ram_end;
+	PROVIDE(__heap_end = __heap_end);
+
+	.stab 				0 (NOLOAD) : { *(.stab) }
+	.stabstr 			0 (NOLOAD) : { *(.stabstr) }
 }
+
