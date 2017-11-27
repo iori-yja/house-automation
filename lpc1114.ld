@@ -82,52 +82,44 @@ SECTIONS
 	.data :
 	{
 		. = ALIGN(4);
-		__data_init_start = .;
-		__data_start = .;
+		_pre_start_data = .;
+		_start_data = .;
 		. = ALIGN(4);
 		*(.data .data.* .gnu.linkonce.d.*)
 
-		__data_end = .;
+		_end_data = .;
 	} > RAM AT > FLASH
 
 	.bss :
 	{
 		. = ALIGN(4);
-		__bss_start = .;
+		_start_bss = .;
 		*(.bss .bss.* .gnu.linkonce.b.*)
 		*(COMMON);
-		__bss_end = .;
+		_end_bss = .;
 	} > RAM AT > RAM 
 
 /*----------------------------*/
 	.stack :
 	{
 		. = ALIGN(8);
-		__stack_start = .;
+		_stack_bottom = .;
 		. = ALIGN(8);
-		__main_stack_start = .;
+		_main_stack_bottom = .;
 		. += __main_stack_size;
 
 		. = ALIGN(8);
-		__main_stack_end = .;
+		_main_stack_top = .;
 
 		. = ALIGN(8);
-		__process_stack_start = .;
-
-		. += __process_stack_size;
-
-		. = ALIGN(8);
-		__process_stack_end = .;
-
-		. = ALIGN(8);
-		__stack_end = .;
+		__stack_top = .;
 	} > RAM AT > RAM 
 
 	. = ALIGN(4);
-	__heap_start = .;
+	_start_heap = .;
 
 	. = ALIGN(4);
-	__heap_end = __ram_end;
+	_end_heap = __ram_end;
 
 	.stab 				0 (NOLOAD) : { *(.stab) }
 	.stabstr 			0 (NOLOAD) : { *(.stabstr) }
