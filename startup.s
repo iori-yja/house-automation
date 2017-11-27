@@ -85,9 +85,9 @@ entry_point:
 +-----------------------------------------------------------------------------+
 */
 
-	ldr		r1, =__data_init_start
-    ldr		r2, =__data_start
-    ldr		r3, =__data_end
+	ldr		r1, =_pre_start_data
+    ldr		r2, =_start_data
+    ldr		r3, =_end_data
 
 	b		2f
 1:	ldmia	r1!, {r0}
@@ -102,8 +102,8 @@ entry_point:
 */
 
 	movs	r0, #0
-	ldr		r1, =__bss_start
-	ldr		r2, =__bss_end
+	ldr		r1, =_start_bss
+	ldr		r2, =_end_bss
 
 	b		2f
 1:	stmia	r1!, {r0}
