@@ -112,7 +112,7 @@ SECTIONS
 		_main_stack_top = .;
 
 		. = ALIGN(8);
-		__stack_top = .;
+		_stack_top = .;
 	} > RAM AT > RAM 
 
 	. = ALIGN(4);
