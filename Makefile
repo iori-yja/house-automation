@@ -15,14 +15,13 @@ BUILD_DIR = ./build
 $(BUILD_DIR)/main.hex:$(BUILD_DIR)/main.elf
 	$(OBJCOPY) -O ihex $(BUILD_DIR)/main.elf $(BUILD_DIR)/main.hex
 
-$(BUILD_DIR)/main.elf:$(BUILD_DIR)/main.out
-	$(LD) -T lpc1114.ld $(BUILD_DIR)/main.out -o $(BUILD_DIR)/main.elf
+$(BUILD_DIR)/main.elf:$(BUILD_DIR)/main.o $(BUILD_DIR)/startup.o
+	$(LD) -T lpc1114.ld $(BUILD_DIR)/main.o $(BUILD_DIR)/startup.o -o $(BUILD_DIR)/main.elf
 
-$(BUILD_DIR)/main.out:$(BUILD_DIR)/main.s
-	$(AS)  -mcpu=cortex-m0 -mthumb $(BUILD_DIR)/main.s $(ASM) -o $(BUILD_DIR)/main.out
+$(BUILD_DIR)/startup.o:$(ASM)
+	$(GCC) -x assembler-with-cpp -c -mcpu=cortex-m0 -mthumb -I. -Iplatform/c/headers $(ASM) -o $(BUILD_DIR)/startup.o
 
-$(BUILD_DIR)/main.s:main.c
-	$(GCC) -c -mcpu=cortex-m0 -mthumb -O2 -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wextra -std=c99 -S -I$(C_HEADER) main.c -o $(BUILD_DIR)/main.s
-
+$(BUILD_DIR)/main.o:main.c
+	$(GCC) -c -mcpu=cortex-m0 -mthumb -O2 -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wextra -std=gnu99 -I. -I$(C_HEADER) main.c -o $(BUILD_DIR)/main.o
 clean:
 	rm build/*
