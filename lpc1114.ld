@@ -7,8 +7,8 @@
 /* Handler mode (core exceptions / interrupts) can use only main stack */
 /* Thread mode can use main stack (default) or process stack - selected in CONTROL special register */
 
-__main_stack_size = 0;
-__process_stack_size = 1024;
+_main_stack_size = 0;
+_process_stack_size = 1024;
 
 
 /*----------------------------*/
@@ -106,7 +106,7 @@ SECTIONS
 		_stack_bottom = .;
 		. = ALIGN(8);
 		_main_stack_bottom = .;
-		. += __main_stack_size;
+		. += _main_stack_size;
 
 		. = ALIGN(8);
 		_main_stack_top = .;

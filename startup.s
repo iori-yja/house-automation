@@ -19,55 +19,56 @@ defined in linker script */
 .word  _end_bss
 /* stack used for SystemInit_ExtMemCtl; always internal RAM used */
 
-.section isr_vector:
-	.long	0x10001000
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	0
-	.long	0
-	.long	0
-	.long	0
-	.long	0
-	.long	0
-	.long	0
-	.long	1+entry_point
-	.long	0
-	.long	0
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
- 	.long	1+entry_point
- 	.long	1+entry_point
- 	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	0
-	.long	0
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	0
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
-	.long	1+entry_point
+.section .vectors
+isr_vector:
+	.word	_main_stack_top
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	0
+	.word	0
+	.word	0
+	.word	0
+	.word	0
+	.word	0
+	.word	0
+	.word	1+entry_point
+	.word	0
+	.word	0
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+ 	.word	1+entry_point
+ 	.word	1+entry_point
+ 	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	0
+	.word	0
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	0
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
+	.word	1+entry_point
 
 
 .text.reset_handler:
