@@ -1,6 +1,8 @@
 #include<stdint.h>
 #include"lpc1114.h"
 #include"lpc111x_gpio.h"
+#include"lpc11xx_iocon.h"
+
 void (* const vectors[])(void) __attribute__ ((section(".vectors"))) ;
 
 int

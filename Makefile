@@ -1,6 +1,6 @@
 TARG=main.c
 
-ASM=startup.s
+ASM=platform/startup.s
 
 TOOLCHAIN_PREFIX=arm-none-eabi-
 
@@ -19,7 +19,7 @@ $(BUILD_DIR)/main.elf:$(BUILD_DIR)/main.out
 	$(LD) -T lpc1114.ld $(BUILD_DIR)/main.out -o $(BUILD_DIR)/main.elf
 
 $(BUILD_DIR)/main.out:$(BUILD_DIR)/main.s
-	$(AS)  -mcpu=cortex-m0 -mthumb $(BUILD_DIR)/main.s startup.s -o $(BUILD_DIR)/main.out
+	$(AS)  -mcpu=cortex-m0 -mthumb $(BUILD_DIR)/main.s $(ASM) -o $(BUILD_DIR)/main.out
 
 $(BUILD_DIR)/main.s:main.c
 	$(GCC) -c -mcpu=cortex-m0 -mthumb -O2 -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wextra -std=c99 -S -I$(C_HEADER) main.c -o $(BUILD_DIR)/main.s
