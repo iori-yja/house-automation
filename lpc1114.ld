@@ -112,6 +112,13 @@ SECTIONS
 		_main_stack_top = .;
 
 		. = ALIGN(8);
+		_process_stack_bottom = .;
+		. += _process_stack_size;
+
+		. = ALIGN(8);
+		_process_stack_top = .;
+
+		. = ALIGN(8);
 		_stack_top = .;
 	} > RAM AT > RAM 
 
