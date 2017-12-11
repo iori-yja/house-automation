@@ -6,13 +6,13 @@
 void (* const vectors[])(void) __attribute__ ((section(".vectors"))) ;
 #define SYSAHBCLKCTRL (* (volatile unsigned long *) (APB_START + 0x48080))
 
+volatile uint32_t count;
 int
 main () {
-	volatile uint32_t count;
 	SYSAHBCLKCTRL |= (1 << 16);
 	GPIO1DIR = 1 << 8;
 	GPIO1DATA = 0;
-	for (count = 0; count < 1000000; count ++) ;
-	GPIO1DATA ^= 1 << 8;
+	for (count = 0; count < 100000; count ++) ;
+	GPIO1DATA |= 1 << 8;
 }
 
