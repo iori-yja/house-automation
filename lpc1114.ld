@@ -6,10 +6,7 @@
 
 /* Handler mode (core exceptions / interrupts) can use only main stack */
 /* Thread mode can use main stack (default) or process stack - selected in CONTROL special register */
-
-_main_stack_size = 0;
-_process_stack_size = 1024;
-
+_stack_capacity = 2048;
 
 /*----------------------------*/
 ENTRY(entry_point)
@@ -22,10 +19,6 @@ MEMORY {
 __rom_start = ORIGIN(FLASH);
 __rom_size = LENGTH(FLASH);
 __rom_end = __rom_start + __rom_size;
-
-__ram_start = ORIGIN(RAM);
-__ram_size = LENGTH(RAM);
-__ram_end = __ram_start + __ram_size;
 
 SECTIONS
 {
@@ -78,7 +71,6 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH
 
-
 	.data :
 	{
 		. = ALIGN(4);
@@ -104,29 +96,10 @@ SECTIONS
 	{
 		. = ALIGN(8);
 		_stack_bottom = .;
-		. = ALIGN(8);
-		_main_stack_bottom = .;
-		. += _main_stack_size;
-
-		. = ALIGN(8);
-		_main_stack_top = .;
-
-		. = ALIGN(8);
-		_process_stack_bottom = .;
-		. += _process_stack_size;
-
-		. = ALIGN(8);
-		_process_stack_top = .;
-
+		. += _stack_capacity;
 		. = ALIGN(8);
 		_stack_top = .;
-	} > RAM AT > RAM 
-
-	. = ALIGN(4);
-	_start_heap = .;
-
-	. = ALIGN(4);
-	_end_heap = __ram_end;
+	} > RAM
 
 	.stab 				0 (NOLOAD) : { *(.stab) }
 	.stabstr 			0 (NOLOAD) : { *(.stabstr) }

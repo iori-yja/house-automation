@@ -21,7 +21,7 @@ defined in linker script */
 
 .section .vectors
 isr_vector:
-	.word	_main_stack_top
+	.word	_stack_bottom
 	.word	1+entry_point
 	.word	1+entry_point
 	.word	1+entry_point
