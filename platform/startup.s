@@ -19,12 +19,14 @@ defined in linker script */
 .word  _end_bss
 /* stack used for SystemInit_ExtMemCtl; always internal RAM used */
 
-.section .vectors
+.section .vectors,"a",%progbits
+.type isr_vector, %object
+.size isr_vector, .-isr_vector
 isr_vector:
-	.word	_stack_bottom
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
+	.word	__main_stack_end - 8
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
 	.word	0
 	.word	0
 	.word	0
@@ -32,43 +34,43 @@ isr_vector:
 	.word	0
 	.word	0
 	.word	0
-	.word	1+entry_point
+	.word	entry_point
 	.word	0
 	.word	0
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
- 	.word	1+entry_point
- 	.word	1+entry_point
- 	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+ 	.word	entry_point
+ 	.word	entry_point
+ 	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
 	.word	0
 	.word	0
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
 	.word	0
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
-	.word	1+entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
+	.word	entry_point
 
 
 .text.reset_handler:
@@ -79,6 +81,12 @@ isr_vector:
 .equ LED ,8
 
 entry_point:
+  ldr r0, =__process_stack_end
+	msr PSP, r0
+
+	movs r0, #2
+	msr CONTROL, r0
+	isb
 
 /*
 +-----------------------------------------------------------------------------+
@@ -113,8 +121,8 @@ entry_point:
 
 
 /* Call the application's entry point.*/
-	ldr		r0, =main
-	blx		r0
+	bl		main
+	bx		lr
 	nop
 	nop
 	nop
