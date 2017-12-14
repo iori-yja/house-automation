@@ -19,11 +19,9 @@ defined in linker script */
 .word  _end_bss
 /* stack used for SystemInit_ExtMemCtl; always internal RAM used */
 
-.section .vectors,"a",%progbits
-.type isr_vector, %object
-.size isr_vector, .-isr_vector
+.section .vectors
 isr_vector:
-	.word	__main_stack_end - 8
+	.word	_stack_top
 	.word	entry_point
 	.word	entry_point
 	.word	entry_point
@@ -81,7 +79,8 @@ isr_vector:
 .equ LED ,8
 
 entry_point:
-  ldr r0, =__process_stack_end
+
+  ldr r0, =_stack_bottom
 	msr PSP, r0
 
 	movs r0, #2

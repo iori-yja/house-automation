@@ -13,7 +13,7 @@ ENTRY(entry_point)
 
 MEMORY {
   FLASH (rx)      : ORIGIN = 0x00000000, LENGTH = 32K 
-  RAM (xrw)       : ORIGIN = 0x10000000, LENGTH = 192K
+  RAM (xrw)       : ORIGIN = 0x10000000, LENGTH = 4K
 }
 
 __rom_start = ORIGIN(FLASH);
@@ -22,19 +22,14 @@ __rom_end = __rom_start + __rom_size;
 
 SECTIONS
 {
-  . = 0x0;
-  .vectors :
-  {
+	.text :
+	{
+		. = 0x0;
     . = ALIGN(4);
     KEEP(*(.vectors)) /* 0x00 - 0xC0 */
     . = ALIGN(4);
-  } >FLASH AT > FLASH
-
-  . = 0xC0;
-	.text :
-	{
-		. = 0xC0;
-		. = ALIGN(4);
+		/* . = 0xC0;
+		. = ALIGN(4); */
     *(.text .text*)
 		*(.glue_7t .glue_7);
     *(.rodata .rodata*)
@@ -94,12 +89,10 @@ SECTIONS
 /*----------------------------*/
 	.stack :
 	{
-		. = ALIGN(8);
-		_stack_bottom = .;
-		. += _stack_capacity;
-		. = ALIGN(8);
 		_stack_top = .;
-	} > RAM
+		. += _stack_capacity;
+		_stack_bottom = .;
+	} > RAM AT > RAM
 
 	.stab 				0 (NOLOAD) : { *(.stab) }
 	.stabstr 			0 (NOLOAD) : { *(.stabstr) }
