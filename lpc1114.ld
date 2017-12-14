@@ -86,15 +86,11 @@ SECTIONS
 		_end_bss = .;
 	} > RAM AT > RAM 
 
-/*----------------------------*/
 	.stack :
 	{
 		_stack_top = .;
 		. += _stack_capacity;
 		_stack_bottom = .;
 	} > RAM AT > RAM
-
-	.stab 				0 (NOLOAD) : { *(.stab) }
-	.stabstr 			0 (NOLOAD) : { *(.stabstr) }
 }
 

@@ -21,7 +21,7 @@ defined in linker script */
 
 .section .vectors
 isr_vector:
-	.word	_stack_top
+	.word	_stack_bottom
 	.word	entry_point
 	.word	entry_point
 	.word	entry_point
@@ -69,7 +69,6 @@ isr_vector:
 	.word	entry_point
 	.word	entry_point
 	.word	entry_point
-
 
 .text.reset_handler:
 .type  entry_point, %function
@@ -79,7 +78,6 @@ isr_vector:
 .equ LED ,8
 
 entry_point:
-
   ldr r0, =_stack_bottom
 	msr PSP, r0
 
@@ -87,12 +85,7 @@ entry_point:
 	msr CONTROL, r0
 	isb
 
-/*
-+-----------------------------------------------------------------------------+
-| Initialize .data section
-+-----------------------------------------------------------------------------+
-*/
-
+data_init:
 	ldr		r1, =_pre_start_data
     ldr		r2, =_start_data
     ldr		r3, =_end_data
@@ -103,12 +96,7 @@ entry_point:
 2:	cmp		r2, r3
 	bne		1b
 
-/*
-+-----------------------------------------------------------------------------+
-| Zero-init .bss section
-+-----------------------------------------------------------------------------+
-*/
-
+bss_init:
 	movs	r0, #0
 	ldr		r1, =_start_bss
 	ldr		r2, =_end_bss
